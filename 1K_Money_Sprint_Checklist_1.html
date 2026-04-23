@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1K Money Sprint Checklist</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #0f0f0f;
+    color: #f0f0f0;
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  /* ── TOP BAR ── */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 28px;
+    background: #161616;
+    border-bottom: 1px solid #2a2a2a;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .topbar-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    background: linear-gradient(135deg, #f5c842, #e8507a);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .topbar-right { display: flex; gap: 10px; align-items: center; }
+
+  .print-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    background: #1e1e1e;
+    border: 1px solid #444;
+    border-radius: 6px;
+    color: #ccc;
+    font-size: 0.78rem;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.2s;
+  }
+  .print-btn:hover { border-color: #f5c842; color: #f5c842; }
+  .print-btn svg { width: 14px; height: 14px; }
+
+  /* ── OVERALL PROGRESS ── */
+  .overall-progress {
+    padding: 16px 28px 0;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  .progress-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+    font-size: 0.78rem;
+    color: #666;
+  }
+
+  .progress-bar-wrap {
+    background: #1e1e1e;
+    border-radius: 999px;
+    height: 8px;
+    overflow: hidden;
+  }
+
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #f5c842, #e8507a);
+    border-radius: 999px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  /* ── PAGE TABS ── */
+  .tabs {
+    display: flex;
+    gap: 6px;
+    padding: 16px 28px 0;
+    max-width: 860px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+  }
+
+  .tab {
+    padding: 6px 14px;
+    border-radius: 999px;
+    border: 1px solid #333;
+    font-size: 0.75rem;
+    cursor: pointer;
+    color: #666;
+    background: transparent;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .tab:hover { border-color: #888; color: #ccc; }
+  .tab.active { border-color: #f5c842; color: #f5c842; background: #f5c84210; }
+
+  /* ── MAIN CONTENT ── */
+  .main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 24px 28px 40px;
+  }
+
+  /* ── SECTION CARD ── */
+  .section-card {
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+
+  .section-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 22px;
+    background: #1f1f1f;
+    border-bottom: 1px solid #2a2a2a;
+  }
+
+  .badge {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.95rem;
+    flex-shrink: 0;
+  }
+
+  .c1 .badge { background: #f5c84215; color: #f5c842; border: 1.5px solid #f5c842; }
+  .c2 .badge { background: #e8507a15; color: #e8507a; border: 1.5px solid #e8507a; }
+  .c3 .badge { background: #a78bfa15; color: #a78bfa; border: 1.5px solid #a78bfa; }
+  .c4 .badge { background: #4ade8015; color: #4ade80; border: 1.5px solid #4ade80; }
+
+  .section-meta { flex: 1; }
+  .section-meta .eyebrow { font-size: 0.7rem; color: #555; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 2px; }
+  .section-meta h2 { font-size: 1rem; font-weight: 600; }
+
+  /* ── PROMPT BOX ── */
+  .prompt-wrap { padding: 18px 22px 4px; }
+
+  .prompt-box {
+    background: #111;
+    border: 1px solid #2e2e2e;
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-size: 0.875rem;
+    line-height: 1.7;
+    color: #bbb;
+    font-style: italic;
+  }
+
+  .prompt-eyebrow {
+    display: block;
+    font-style: normal;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #484848;
+    margin-bottom: 6px;
+  }
+
+  .copy-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+    padding: 7px 14px;
+    background: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 6px;
+    color: #888;
+    font-size: 0.75rem;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.2s;
+  }
+  .copy-btn:hover { border-color: #f5c842; color: #f5c842; background: #f5c84210; }
+  .copy-btn.ok { border-color: #4ade80; color: #4ade80; background: #4ade8010; }
+  .copy-btn svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+  /* ── CHECKLIST ── */
+  .checklist { padding: 6px 22px 18px; }
+
+  .ci {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid #1e1e1e;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    transition: opacity 0.15s;
+  }
+  .ci:last-child { border-bottom: none; }
+  .ci:hover .box { border-color: #777; }
+
+  .box {
+    width: 20px;
+    min-width: 20px;
+    height: 20px;
+    border-radius: 5px;
+    border: 1.5px solid #3a3a3a;
+    background: #0d0d0d;
+    margin-top: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+  }
+
+  .box svg { display: none; width: 11px; height: 11px; }
+
+  .ci.done .box { background: #f5c842; border-color: #f5c842; }
+  .ci.done .box svg { display: block; }
+  .ci.done .ct { text-decoration: line-through; color: #444; }
+
+  .c2 .ci.done .box { background: #e8507a; border-color: #e8507a; }
+  .c3 .ci.done .box { background: #a78bfa; border-color: #a78bfa; }
+  .c4 .ci.done .box { background: #4ade80; border-color: #4ade80; }
+
+  .ct { font-size: 0.875rem; line-height: 1.55; color: #bbb; }
+
+  .tag {
+    display: inline-block;
+    font-size: 0.65rem;
+    padding: 1px 7px;
+    border-radius: 999px;
+    margin-left: 6px;
+    vertical-align: middle;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .tt { background: #0e2340; color: #60a5fa; }
+  .tp { background: #1e1030; color: #c084fc; }
+  .tw { background: #2a1308; color: #fb923c; }
+
+  /* ── NAV ── */
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 28px;
+    gap: 12px;
+  }
+
+  .nav-btn {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: 1px solid #333;
+    background: #1a1a1a;
+    color: #888;
+    font-size: 0.82rem;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.2s;
+  }
+  .nav-btn:hover:not(:disabled) { border-color: #888; color: #ddd; }
+  .nav-btn:disabled { opacity: 0.25; cursor: default; }
+  .nav-btn svg { width: 14px; height: 14px; }
+
+  .nav-next {
+    background: linear-gradient(135deg, #f5c84220, #e8507a20);
+    border-color: #f5c84250;
+    color: #f5c842;
+  }
+  .nav-next:hover:not(:disabled) { background: linear-gradient(135deg, #f5c84235, #e8507a35); border-color: #f5c842; color: #f5c842; }
+
+  .page-indicator {
+    font-size: 0.78rem;
+    color: #555;
+  }
+
+  /* ── PAGE STEP COUNTER ── */
+  .page-counter {
+    text-align: right;
+    font-size: 0.75rem;
+    color: #555;
+    margin-bottom: 12px;
+  }
+
+  /* ── HIDDEN ── */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ── PRINT STYLES ── */
+  @media print {
+    body { background: #fff; color: #000; }
+    .topbar, .tabs, .nav, .copy-btn, .print-btn { display: none !important; }
+    .page { display: block !important; }
+    .section-card { border: 1px solid #ccc; break-inside: avoid; margin-bottom: 24px; }
+    .section-head { background: #f5f5f5; }
+    .prompt-box { background: #fafafa; color: #333; border-color: #ddd; }
+    .box { border-color: #aaa; background: #fff; }
+    .ci.done .box { background: #333; }
+    .ct { color: #222; }
+    .ci.done .ct { color: #999; }
+    .overall-progress { display: block; }
+    .progress-bar-wrap { border: 1px solid #ccc; }
+    .progress-bar { background: #333; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <span class="topbar-title">1K Money Sprint</span>
+  <div class="topbar-right">
+    <button class="print-btn" onclick="window.print()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      Save as PDF
+    </button>
+  </div>
+</div>
+
+<!-- OVERALL PROGRESS -->
+<div class="overall-progress">
+  <div class="progress-row">
+    <span>Overall Progress</span>
+    <span id="overallLabel">0 of 22 steps</span>
+  </div>
+  <div class="progress-bar-wrap">
+    <div class="progress-bar" id="overallBar"></div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab active" onclick="goTo(0)">① Find Your Path</button>
+  <button class="tab" onclick="goTo(1)">② Find Your Mentor</button>
+  <button class="tab" onclick="goTo(2)">③ 20-Day Plan</button>
+  <button class="tab" onclick="goTo(3)">★ Bonus Prompt</button>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- PAGE 0: PROMPT 1 -->
+  <div class="page active" id="page0">
+    <div class="page-counter" id="counter0"></div>
+    <div class="section-card c1">
+      <div class="section-head">
+        <div class="badge">1</div>
+        <div class="section-meta">
+          <div class="eyebrow">Prompt 1</div>
+          <h2>Find Your Two Paths to $1,000</h2>
+        </div>
+      </div>
+      <div class="prompt-wrap">
+        <div class="prompt-box">
+          <span class="prompt-eyebrow">Copy &amp; paste into Claude</span>
+          <span id="pt1">Give me two ways I could make my first $1,000 in 30 days. Both ways must require skills I already have, not require an audience, and be sellable within 48 hours. Ask me clarifying questions until you're 95% confident in your recommendations.</span>
+        </div>
+        <button class="copy-btn" id="cb1" onclick="doCopy('pt1','cb1')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copy Prompt
+        </button>
+      </div>
+      <div class="checklist" id="cl0">
+        <div class="ci" onclick="tick(this)"><div class="box"><svg viewBox="0 0 12 12" fill="none"><polyline points="1.5,6 4.5,9.5 10.5,2.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="ct">Log into Claude.ai and choose your model — Opus for depth, Sonnet for speed <span class="tag tt">Claude.ai</span></span></div>
+        <div class="ci" onclick="tick(this)"><div class="box"><svg viewBox="0 0 12 12" fill="none"><polyline points="1.5,6 4.5,9.5 10.5,2.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="ct">Paste Prompt 1 and hit send</span></div>
+        <div class="ci" onclick="tick(this)"><div class="box"><svg viewBox="0 0 12 12" fill="none"><polyline points="1.5,6 4.5,9.5 10.5,2.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="ct">Answer Claude's clarifying questions honestly — skills, hours per week, warm network, industry</span></div>
+        <div class="ci" onclick="tick(this)"><div class="box"><svg viewBox="0 0 12 12" fill="none"><polyline points="1.5,6 4.5,9.5 10.5,2.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="ct">Review the two service ideas Claude suggests (example: LinkedIn ghostwriting or profile + post packages)</span></div>
+        <div class="ci" onclick="tick(this)"><div class="box"><svg viewBox="0 0 12 12" fill="none"><polyline points="1.5,6 4.5,9.5 10.5,2.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="ct">Push back if you hate the suggestions — keep refining until both paths feel realistic</span></div>
+        <div class="ci" onclick="tick(this)"><div class="box"><svg viewBox="0 0 12 12" fill="none"><polyline points="1.5,6 4.5,9.5 10.5,2.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="ct">Pick ONE path and commit to it before moving on <span class="tag tw">Required</span></span></div>
+      </div>
+    </div>
+    <div class="nav">
+      <button class="nav-btn" disabled>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        Previous
+      </button>
+      <span class="page-indicator">Step 1 of 4</span>
+      <button class="nav-btn nav-next" onclick="goTo(1)">
+        Next
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- PAGE 1: PROMPT 2 -->
+  <div class="page" id="page1">
+    <div class="page-counter" id="counter1"></div>
+    <div class="section-card c2">
+      <div class="section-head">
+        <div class="badge">2</div>
+        <div class="section-meta">
+          <div class="eyebrow">Prompt 2</div>
+          <h2>Find Your Mentor to Model</h2>
+        </div>
+      </div>
+      <div class="prompt-wrap">
+        <div class="prompt-box">
+          <span class="prompt-eyebrow">Copy &amp; paste into Claude</span>
+          <span id="pt2">Who is the single most successful person I should learn from to make this happen? Limit it to one person.</span>
+        </div>
+        <button class="copy-btn" id="cb2" onclick="doCopy('pt2','cb2')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copy Prompt
+        </button>
+      </div>
+      <div class="checklist" id="cl1">
+        <div class="ci" onclick="tick(this)"><div class="box"><svg viewBox="0 0 12 12" fill="none"><polyline points="1.5,6 4.5,9.5 10.5,2.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="ct">Note the one person Claude recommends as your model (example for LinkedIn path: Justin Welsh)</span></div>
+        <div class="ci" onclick="tick(this)"><div class="box"><svg viewBox="0 0 12 12" fill="none"><polyline points="1.5,6 4.5,9.5 10.5,2.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="ct">Set a hard cap of 3–4 hours max studying their content this week <span class="tag tw">Do NOT binge</span></span></div>
+        <div class="ci" onclick="tick(this)"><div class="box"><svg viewBox="0 0 12 12" fill="none"><polyline points="1.5,6 4.5,9.5 10.5,2.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="ct">Study what they sell, how they position it, and how they attract clients</span></div>
+        <div class="ci" onclick="tick(this)"><div class="box"><svg viewBox="0 0 12 12" fill="none"><polyline points="1.5,6 4.5,9.5 10.5,2.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="ct">After your study session ends, move straight to Prompt 3 — no lingering <span class="tag tp">Tip</span></span></div>
+      </div>
+    </div>
+    <div class="nav">
+      <button class="nav-btn" onclick="goTo(0)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        Previous
+      </button>
+      <span class="page-indicator">Step 2 of 4</span>
+      <button class="nav-btn nav-next" onclick="goTo(2)">
+        Next
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- PAGE 2: PROMPT 3 -->
+  <div class="page" id="page2">
+    <div class="page-counter" id="counter2"></div>
+    <div class="section-card c3">
+      <div class="section-head">
+        <div class="badge">3</div>
+        <div class="section-meta">
+          <div class="eyebrow">Prompt 3</div>
+          <h2>Build Your 20-Day Customer Acquisition Plan</h2>
+        </div>
+      </div>
+      <div class="prompt-wrap">
+        <div class="prompt-box">
+          <span class="prompt-eyebrow">Copy &amp; paste into Claude — replace [mentor name] first</span>
+          <span id="pt3">Pretend you are [mentor name]. Create a 20-day plan that needs less than $1,000 upfront that gets me to my first paying customer as fast as possible. Customer acquisition must start on day one.</span>
+        </div>
+        <button class="copy-btn" id="cb3" onclick="doCopy('pt3','cb3')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copy Prompt
+        </button>
+      </div>
+      <div class="checklist" id="cl2">
+        <div class="ci" onclick="tick(this)"><div class="box"><svg viewBox="0 0 12 12" fill="none"><polyline points="1.5,6 4.5,9.5 10.5,2.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="ct">Days 1–3: Polish your own profile or sample assets — your profile is your proof of concept</span></div>
+        <div class="ci" onclick="tick(this)"><div class="box"><svg viewBox="0 0 12 12" fill="none"><polyline points="1.5,6 4.5,9.5 10.5,2.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="ct">Days 2–3: Build your prospecting list — search for your exact target client type <span class="tag tt">LinkedIn</span></span></div>
+        <div class="ci" onclick="tick(this)"><div class="box"><svg viewBox="0 0 12 12" fill="none"><polyline points="1.5,6 4.5,9.5 10.5,2.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="ct">Days 4–10: Start the "free sample close" — write one piece of content in their voice, send it with no strings attached</span></div>
+        <div class="ci" onclick="tick(this)"><div class="box"><svg viewBox="0 0 12 12" fill="none"><polyline points="1.5,6 4.5,9.5 10.5,2.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="ct">Say "if you like it, post it — if you want more, hit me up" and leave it there</span></div>
+        <div class="ci" onclick="tick(this)"><div class="box"><svg viewBox="0 0 12 12" fill="none"><polyline points="1.5,6 4.5,9.5 10.5,2.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="ct">Set up a Stripe payment link before anyone says yes — be ready to collect <span class="tag tt">Stripe</span></span></div>
+        <div class="ci" onclick="tick(this)"><div class="box"><svg viewBox="0 0 12 12" fill="none"><polyline points="1.5,6 4.5,9.5 10.5,2.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="ct">Consider LinkedIn Premium for search filters and InMail credits <span class="tag tt">LinkedIn Premium</span></span></div>
+        <div class="ci" onclick="tick(this)"><div class="box"><svg viewBox="0 0 12 12" fill="none"><polyline points="1.5,6 4.5,9.5 10.5,2.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="ct">Days 11–20: Send DMs every single day — this is a volume game, not a talent game <span class="tag tw">Key insight</span></span></div>
+        <div class="ci" onclick="tick(this)"><div class="box"><svg viewBox="0 0 12 12" fill="none"><polyline points="1.5,6 4.5,9.5 10.5,2.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="ct">When you name your price, say it — then go completely silent. Silence means they are calculating ROI, not saying no</span></div>
+        <div class="ci" onclick="tick(this)"><div class="box"><svg viewBox="0 0 12 12" fill="none"><polyline points="1.5,6 4.5,9.5 10.5,2.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="ct">Target: DM 200 people → expect ~20 replies → 20 real data points on pricing, objections, and interest</span></div>
+      </div>
+    </div>
+    <div class="nav">
+      <button class="nav-btn" onclick="goTo(1)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        Previous
+      </button>
+      <span class="page-indicator">Step 3 of 4</span>
+      <button class="nav-btn nav-next" onclick="goTo(3)">
+        Next
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- PAGE 3: BONUS -->
+  <div class="page" id="page3">
+    <div class="page-counter" id="counter3"></div>
+    <div class="section-card c4">
+      <div class="section-head">
+        <div class="badge">★</div>
+        <div class="section-meta">
+          <div class="eyebrow">Bonus Prompt</div>
+          <h2>Cut the Plan in Half — Keep Only What Makes Money</h2>
+        </div>
+      </div>
+      <div class="prompt-wrap">
+        <div class="prompt-box">
+          <span class="prompt-eyebrow">Use this if you struggle with procrastination</span>
+          <span id="pt4">Ask me three yes or no questions to identify what will stop me this week. Then cut the plan in half and keep only what directly leads to money.</span>
+        </div>
+        <button class="copy-btn" id="cb4" onclick="doCopy('pt4','cb4')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copy Prompt
+        </button>
+      </div>
+      <div class="checklist" id="cl3">
+        <div class="ci" onclick="tick(this)"><div class="box"><svg viewBox="0 0 12 12" fill="none"><polyline points="1.5,6 4.5,9.5 10.5,2.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="ct">Answer Claude's three yes/no questions as honestly as possible</span></div>
+        <div class="ci" onclick="tick(this)"><div class="box"><svg viewBox="0 0 12 12" fill="none"><polyline points="1.5,6 4.5,9.5 10.5,2.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="ct">Let Claude identify your specific failure risks (most common: not sending the DM after rejection)</span></div>
+        <div class="ci" onclick="tick(this)"><div class="box"><svg viewBox="0 0 12 12" fill="none"><polyline points="1.5,6 4.5,9.5 10.5,2.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="ct">Put a physical sticky note on your monitor: today's DMs sent + your 10-day running total <span class="tag tp">Physical reminder</span></span></div>
+        <div class="ci" onclick="tick(this)"><div class="box"><svg viewBox="0 0 12 12" fill="none"><polyline points="1.5,6 4.5,9.5 10.5,2.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="ct">If you get ghosted, send the next DM anyway — getting ghosted is data, not personal rejection</span></div>
+        <div class="ci" onclick="tick(this)"><div class="box"><svg viewBox="0 0 12 12" fill="none"><polyline points="1.5,6 4.5,9.5 10.5,2.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="ct">Execute only the steps Claude keeps after cutting — nothing else until you have a paying customer</span></div>
+      </div>
+    </div>
+    <div class="nav">
+      <button class="nav-btn" onclick="goTo(2)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        Previous
+      </button>
+      <span class="page-indicator">Step 4 of 4</span>
+      <button class="nav-btn" onclick="resetAll()" style="border-color:#444;color:#666;">
+        Reset All
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3"/></svg>
+      </button>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<script>
+  var currentPage = 0;
+  var totalPages = 4;
+
+  // counts per page checklist
+  var pageCounts = [6, 4, 9, 5]; // items per page
+  var totalSteps = 0;
+  for (var i = 0; i < pageCounts.length; i++) totalSteps += pageCounts[i];
+
+  function goTo(n) {
+    document.getElementById('page' + currentPage).classList.remove('active');
+    document.querySelectorAll('.tab')[currentPage].classList.remove('active');
+    currentPage = n;
+    document.getElementById('page' + currentPage).classList.add('active');
+    document.querySelectorAll('.tab')[currentPage].classList.add('active');
+    updateCounters();
+    window.scrollTo(0, 0);
+  }
+
+  function tick(el) {
+    el.classList.toggle('done');
+    updateAll();
+  }
+
+  function updateAll() {
+    updateCounters();
+    updateOverall();
+  }
+
+  function updateCounters() {
+    for (var p = 0; p < totalPages; p++) {
+      var cl = document.getElementById('cl' + p);
+      if (!cl) continue;
+      var all = cl.querySelectorAll('.ci');
+      var done = cl.querySelectorAll('.ci.done');
+      document.getElementById('counter' + p).textContent = done.length + ' of ' + all.length + ' steps on this page completed';
+    }
+  }
+
+  function updateOverall() {
+    var allItems = document.querySelectorAll('.ci');
+    var doneItems = document.querySelectorAll('.ci.done');
+    var pct = allItems.length ? Math.round((doneItems.length / allItems.length) * 100) : 0;
+    document.getElementById('overallBar').style.width = pct + '%';
+    document.getElementById('overallLabel').textContent = doneItems.length + ' of ' + allItems.length + ' steps completed';
+  }
+
+  function doCopy(textId, btnId) {
+    var text = document.getElementById(textId).innerText;
+    var btn = document.getElementById(btnId);
+    var original = btn.innerHTML;
+
+    function showCopied() {
+      btn.classList.add('ok');
+      btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Copied!';
+      setTimeout(function() {
+        btn.classList.remove('ok');
+        btn.innerHTML = original;
+      }, 2000);
+    }
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(showCopied).catch(function() { fallbackCopy(text, showCopied); });
+    } else {
+      fallbackCopy(text, showCopied);
+    }
+  }
+
+  function fallbackCopy(text, cb) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    try { document.execCommand('copy'); cb(); } catch(e) { alert('Copy failed — please select the text manually.'); }
+    document.body.removeChild(ta);
+  }
+
+  function resetAll() {
+    if (!confirm('Reset all checkboxes?')) return;
+    document.querySelectorAll('.ci').forEach(function(el) { el.classList.remove('done'); });
+    updateAll();
+  }
+
+  // init
+  updateAll();
+</script>
+</body>
+</html>
